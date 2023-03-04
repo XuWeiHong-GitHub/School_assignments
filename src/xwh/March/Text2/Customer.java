@@ -1,5 +1,7 @@
 package xwh.March.Text2;
 
+import xwh.Utility.Utility;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -41,7 +43,7 @@ public class Customer {
 
     private void saveMoney() {
         System.out.print("\n请输入存款金额：");
-        double money = scanner.nextDouble();
+        double money = Utility.readDouble();
         this.money += money;
         date = new Date();
         detail += sdf.format(date) + "\t存入" + money + "\n";
@@ -49,7 +51,7 @@ public class Customer {
 
     private void withdrawMoney() {
         System.out.print("\n请输入取款金额：");
-        double money = scanner.nextDouble();
+        double money = Utility.readDouble();
         if (money > this.money) {
             System.out.println("余额不足");
             return;
@@ -61,14 +63,14 @@ public class Customer {
 
     private void transferAccounts() {
         System.out.print("\n请输入要转账的对象ID：");
-        int id = scanner.nextInt();
+        int id = Utility.readInt();
         Customer payee = CustomMap.searchCustomer(id);
         if (payee == null) {
             System.out.println("不存在该用户");
             return;
         }
         System.out.print("请输入要转账的金额：");
-        double payMoney = scanner.nextDouble();
+        double payMoney = Utility.readDouble();
         if (payMoney > this.money) {
             System.out.println("余额不足");
             return;
@@ -100,7 +102,7 @@ public class Customer {
             System.out.println("\t\t3\t 取款\t\t4\t 转账");
             System.out.println("\t\t5\t 修改密码\t0\t 退出");
             System.out.print("请输入对应的操作序号：");
-            int n = scanner.nextInt();
+            int n = Utility.readInt();
             switch (n) {
                 case 1 -> print();
                 case 2 -> saveMoney();

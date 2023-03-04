@@ -1,5 +1,7 @@
 package xwh.March.Text2;
 
+import xwh.Utility.Utility;
+
 import java.util.Scanner;
 
 /**
@@ -8,7 +10,6 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         boolean flag = true;
         while (flag) {
             System.out.println("==================================");
@@ -17,7 +18,7 @@ public class Main {
             System.out.println("\t\t3\t删除旧用户");
             System.out.println("\t\t0\t退出系统");
             System.out.print("请输入：");
-            int n = scanner.nextInt();
+            int n = Utility.readInt();
             switch (n) {
                 case 1 -> {
                     Customer customer = login();
@@ -28,7 +29,7 @@ public class Main {
                 case 2 -> addCus();
                 case 3 -> {
                     System.out.print("请输入要删除用户的ID：");
-                    int id = scanner.nextInt();
+                    int id = Utility.readInt();
                     CustomMap.deleteCustomer(id);
                 }
                 case 0 -> {
@@ -46,7 +47,7 @@ public class Main {
         System.out.print("请输入姓名：");
         String name = scanner.next();
         System.out.print("请输入id：");
-        int id = scanner.nextInt();
+        int id = Utility.readInt();
         System.out.print("请输入密码：");
         String pwd = scanner.next();
         System.out.print("请输入存款：");
@@ -55,11 +56,9 @@ public class Main {
     }
 
     public static Customer login() {
-        Scanner scanner = new Scanner(System.in);
-
         Customer customer;
         System.out.print("请输入账号：");
-        int id = scanner.nextInt();
+        int id = Utility.readInt();
         customer = CustomMap.searchCustomer(id);
         if (customer == null) {
             System.out.println("用户不存在");
