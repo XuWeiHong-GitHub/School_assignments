@@ -1,5 +1,7 @@
 package xwh.Utility;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.Scanner;
 
 /**
@@ -7,10 +9,13 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class Utility {
+
     private static final Scanner scanner = new Scanner(System.in);
+    private static final String KEY_MD5 = "MD5"; //加密方式
 
     /**
      * 功能：读取键盘输入的整型，数值介于 min 和 max 之间
+     *
      * @param max 可以返回的最大值
      * @param min 可以返回的最小值
      * @return 整数
@@ -82,6 +87,7 @@ public class Utility {
 
     /**
      * 功能：读取键盘输入的浮点数，数值介于 min 和 max 之间
+     *
      * @param max 可以返回的最大值
      * @param min 可以返回的最小值
      * @return 浮点数
@@ -123,5 +129,25 @@ public class Utility {
             }
         }
         return n;
+    }
+
+    /**
+     * 功能：将 inputStr加密
+     *
+     * @param inputStr 加密前的字符串
+     * @return 字符串
+     */
+    public static String stringEncryption(String inputStr) {
+        BigInteger bigInteger = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance(KEY_MD5);
+            byte[] inputData = inputStr.getBytes();
+            md.update(inputData);
+            bigInteger = new BigInteger(md.digest());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assert bigInteger != null;
+        return bigInteger.toString(16);//转换为16进制
     }
 }

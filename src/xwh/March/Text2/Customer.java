@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  * @author 许伟鸿
- * @version 1.0
+ * @version 2.0
  */
 public class Customer implements Serializable {
     public int ID;
@@ -21,7 +21,7 @@ public class Customer implements Serializable {
 
     public Customer(int ID, String password, String name, double money) {
         this.ID = ID;
-        this.password = password;
+        this.password = Utility.stringEncryption(password);
         this.name = name;
         this.money = money;
         date = new Date();
@@ -91,15 +91,45 @@ public class Customer implements Serializable {
         System.out.print("请输入密码：");
         Scanner scanner = new Scanner(System.in);
         String pwd = scanner.next();
-        return pwd.equals(this.password);
+        return Utility.stringEncryption(pwd).equals(this.password);
     }
 
     private void changePassword() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("请输入修改密码：");
-        this.password = scanner.next();
+        this.password = Utility.stringEncryption(scanner.next());
         System.out.println("修改成功");
         CustomMap.saveMap();
+    }
+
+    public static void addCustomer() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("==========添加用户==========");
+        System.out.print("请输入姓名：");
+        String name = scanner.next();
+        System.out.print("请输入id：");
+        int id = Utility.readInt();
+        System.out.print("请输入密码：");
+        String pwd = scanner.next();
+        System.out.print("请输入存款：");
+        double money = scanner.nextDouble();
+        CustomMap.addCustomer(new Customer(id, pwd, name, money));
+    }
+
+    public static Customer CustomerLogin() {
+        Customer customer;
+        System.out.print("请输入账号：");
+        int id = Utility.readInt();
+        customer = CustomMap.searchCustomer(id);
+        if (customer == null) {
+            System.out.println("用户不存在");
+            return null;
+        }
+
+        if (customer.confirmPassword()) {
+            return customer;
+        }
+        return null;
     }
 
     public void run() {

@@ -6,10 +6,11 @@ import java.util.Objects;
 
 /**
  * @author 许伟鸿
- * @version 1.0
+ * @version 2.0
  */
 public class CustomMap implements Serializable{
 
+    //存储用户数据的 Hashtable
     private static Hashtable<Integer, Customer> customerMap = new Hashtable<>();
     private static final String filePath = "C:\\Users\\86135\\Desktop\\program\\java\\School assignments\\src\\CustomMap.dat";
 
@@ -60,7 +61,7 @@ public class CustomMap implements Serializable{
             oos.writeObject(customerMap);
             oos.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("数据保存失败");
         }
     }
 }
