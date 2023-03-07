@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         boolean flag = true;
+        CustomMap.initMap();
         while (flag) {
             System.out.println("==================================");
             System.out.println("\t\t1\t用户登入");

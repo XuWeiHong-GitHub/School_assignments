@@ -2,6 +2,7 @@ package xwh.March.Text2;
 
 import xwh.Utility.Utility;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -10,16 +11,13 @@ import java.util.Scanner;
  * @author 许伟鸿
  * @version 1.0
  */
-public class Customer {
+public class Customer implements Serializable {
     public int ID;
     private String password;
     private final String name;
     private double money;
     private String detail = "";
     Date date;       //data表示日期
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //用于日期格式化
-
-    Scanner scanner = new Scanner(System.in);
 
     public Customer(int ID, String password, String name, double money) {
         this.ID = ID;
@@ -27,6 +25,7 @@ public class Customer {
         this.name = name;
         this.money = money;
         date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //用于日期格式化
         detail += sdf.format(date) + "\t初始" + money + "\n";
     }
 
@@ -46,7 +45,9 @@ public class Customer {
         double money = Utility.readDouble();
         this.money += money;
         date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //用于日期格式化
         detail += sdf.format(date) + "\t存入" + money + "\n";
+        CustomMap.saveMap();
     }
 
     private void withdrawMoney() {
@@ -58,7 +59,9 @@ public class Customer {
         }
         this.money -= money;
         date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //用于日期格式化
         detail += sdf.format(date) + "\t取出" + money + "\n";
+        CustomMap.saveMap();
     }
 
     private void transferAccounts() {
@@ -78,20 +81,25 @@ public class Customer {
         this.money -= payMoney;
         payee.money += payMoney;
         date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //用于日期格式化
         this.detail += sdf.format(date) + "\t转出" + payMoney + "给 " + payee.getName() + "\n";
         payee.detail += sdf.format(date) + "\t转入" + payMoney + "来自 " + this.getName() + "\n";
+        CustomMap.saveMap();
     }
 
     public boolean confirmPassword() {
         System.out.print("请输入密码：");
+        Scanner scanner = new Scanner(System.in);
         String pwd = scanner.next();
         return pwd.equals(this.password);
     }
 
     private void changePassword() {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("请输入修改密码：");
         this.password = scanner.next();
         System.out.println("修改成功");
+        CustomMap.saveMap();
     }
 
     public void run() {

@@ -1,15 +1,17 @@
 package xwh.March.Text2;
 
-import java.util.HashMap;
+import java.io.*;
+import java.util.Hashtable;
 import java.util.Objects;
 
 /**
  * @author 许伟鸿
  * @version 1.0
  */
-public class CustomMap {
+public class CustomMap implements Serializable{
 
-    private static final HashMap<Integer, Customer> customerMap = new HashMap<>();
+    private static Hashtable<Integer, Customer> customerMap = new Hashtable<>();
+    private static final String filePath = "C:\\Users\\86135\\Desktop\\program\\java\\School assignments\\src\\CustomMap.dat";
 
     public static void addCustomer(Customer customer) {
         if (customerMap.containsKey(customer.ID)) {
@@ -18,6 +20,7 @@ public class CustomMap {
         }
         customerMap.put(customer.ID, customer);
         System.out.println("创建成功");
+        saveMap();
     }
 
     public static void deleteCustomer(int id) {
@@ -28,6 +31,7 @@ public class CustomMap {
         if (Objects.requireNonNull(searchCustomer(id)).confirmPassword()) {
             customerMap.remove(id);
             System.out.println("删除成功");
+            saveMap();
         }
     }
 
@@ -38,4 +42,25 @@ public class CustomMap {
         return customerMap.get(id);
     }
 
+    public static void initMap(){
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath));
+            customerMap = (Hashtable<Integer, Customer>) ois.readObject();
+            ois.close();
+        } catch (Exception e) {
+            System.out.println("初始化数据失败");
+            return;
+        }
+        System.out.println("数据初始化成功");
+    }
+
+    public static void saveMap()  {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath));
+            oos.writeObject(customerMap);
+            oos.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
